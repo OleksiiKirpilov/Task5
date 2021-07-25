@@ -11,6 +11,7 @@ public class Part1 extends Thread {
                 sleep(500);
             } catch (InterruptedException e) {
                 Logger.getGlobal().severe(e.getMessage());
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -28,12 +29,14 @@ public class Part1 extends Thread {
             t1.join();
         } catch (InterruptedException e) {
             Logger.getGlobal().severe(e.getMessage());
+            Thread.currentThread().interrupt();
         }
         t2.start();
         try {
             t2.join();
         } catch (InterruptedException e) {
             Logger.getGlobal().severe(e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 
