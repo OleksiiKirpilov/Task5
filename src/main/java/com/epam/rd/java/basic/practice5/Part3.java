@@ -22,17 +22,8 @@ public class Part3 {
     }
 
     private void work() {
-        for (Thread t : threads) {
-            t.start();
-        }
-        for (Thread t : threads) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        }
+        // start all threads and join them
+        Spam.runThreadArray(threads);
     }
 
     private void createThreads(int numberOfThreads, int numberOfIterations) {
@@ -43,19 +34,18 @@ public class Part3 {
 
     private void worker(int numberOfIterations) {
         for (int count = 0; count < numberOfIterations; count++) {
-            //int t1 = (int) (System.nanoTime() / 1_000_000);
             if (sync) {
                 compareSync();
             } else {
                 compare();
             }
             counter++;
-            //int t2 = (int) (System.nanoTime() / 1_000_000);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 Logger.getGlobal().severe(e.getMessage());
                 Thread.currentThread().interrupt();
+                break;
             }
             counter2++;
         }
