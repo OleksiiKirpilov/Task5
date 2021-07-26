@@ -14,13 +14,17 @@ public class Part3 {
     public Part3(int numberOfThreads, int numberOfIterations) {
         threads = new Thread[numberOfThreads];
         createThreads(numberOfThreads, numberOfIterations);
-        work();
+    }
+
+    public Part3(int numberOfThreads, int numberOfIterations, boolean sync) {
+        this(numberOfThreads, numberOfIterations);
+        this.sync = sync;
     }
 
     private void work() {
-        for (Thread t : threads) {
-            t.start();
-        }
+//        for (Thread t : threads) {
+//            t.start();
+//        }
         for (Thread t : threads) {
             try {
                 t.join();
@@ -32,37 +36,36 @@ public class Part3 {
 
     private void createThreads(int numberOfThreads, int numberOfIterations) {
         for (int i = 0; i < numberOfThreads; i++) {
-            threads[i] = new Thread() {
-                @Override
-                public void run() {
-                    for (int count = 0; count < numberOfIterations; count++) {
-                        int t1 = (int) (System.nanoTime() / 1_000_000);
-                        if (sync) {
-                            compareSync();
-                        } else {
-                            compare();
-                        }
-                        counter++;
-                        int t2 = (int) (System.nanoTime() / 1_000_000);
-                        try {
-                            sleep(100L - (t2 - t1));
-                        } catch (InterruptedException e) {
-                            Logger.getGlobal().severe(e.getMessage());
-                            interrupt();
-                        }
-                        counter2++;
-                    }
-                }
-            };
+            threads[i] = new Thread(() -> { worker(numberOfIterations); });
+            threads[i].start();
+        }
+    }
+
+    private void worker(int numberOfIterations) {
+        for (int count = 0; count < numberOfIterations; count++) {
+            int t1 = (int) (System.nanoTime() / 1_000_000);
+            if (sync) {
+                compareSync();
+            } else {
+                compare();
+            }
+            counter++;
+            int t2 = (int) (System.nanoTime() / 1_000_000);
+            try {
+                Thread.sleep(100L - (t2 - t1));
+            } catch (InterruptedException e) {
+                Logger.getGlobal().severe(e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+            counter2++;
         }
     }
 
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
-
-        p = new Part3(2, 10);
-        p.sync = true;
-
+        p.work();
+        p = new Part3(2, 10, true);
+        p.work();
     }
 
     public void compare() {
