@@ -47,13 +47,13 @@ public class Part4 {
     }
 
     private static void findMaxParallel() {
+        long t1 = System.nanoTime();
         int numberOfThreads = matrix.length;
         int[] results = new int[numberOfThreads];
         Thread[] threads = new Thread[numberOfThreads];
         for (int i = 0; i < numberOfThreads ; i++) {
             threads[i] = new MyThread(i, results);
         }
-        long t1 = System.nanoTime();
         for (Thread t : threads) {
             t.start();
         }
