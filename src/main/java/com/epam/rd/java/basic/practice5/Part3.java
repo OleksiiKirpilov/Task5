@@ -73,12 +73,4 @@ public class Part3 {
 
     }
 
-    private synchronized void increment() {
-        counter++;
-    }
-
-    private synchronized void increment2() {
-        counter2++;
-    }
-
 }
