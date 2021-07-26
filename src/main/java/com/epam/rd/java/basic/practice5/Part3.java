@@ -15,6 +15,9 @@ public class Part3 {
         threads = new Thread[numberOfThreads];
         createThreads(numberOfThreads, numberOfIterations);
         work();
+        sync = true;
+        createThreads(numberOfThreads, numberOfIterations);
+        work();
     }
 
     public Part3(int numberOfThreads, int numberOfIterations, boolean sync) {
@@ -55,8 +58,8 @@ public class Part3 {
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
         System.err.println(p);
-        p = new Part3(2, 10, true);
-        System.err.println(p);
+//        p = new Part3(2, 10, true);
+//        System.err.println(p);
     }
 
     public void compare() {
