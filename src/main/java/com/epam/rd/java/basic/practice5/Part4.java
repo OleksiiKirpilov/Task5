@@ -86,7 +86,7 @@ public class Part4 {
             Logger.getGlobal().severe(e.getMessage());
             Thread.currentThread().interrupt();
         }
-        return (max > n) ? max : n;
+        return Math.max(max, n);
     }
 
     private static void loadMatrix() {

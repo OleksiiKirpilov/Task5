@@ -33,10 +33,10 @@ public class Part3 {
                 @Override
                 public void run() {
                     for (int count = 0; count < numberOfIterations; count++) {
-                        if (!sync) {
-                            compare();
-                        } else {
+                        if (sync) {
                             compareSync();
+                        } else {
+                            compare();
                         }
                         counter++;
                         try {
@@ -66,7 +66,7 @@ public class Part3 {
 
     public void compareSync() {
         boolean eq;
-        synchronized (this) {
+        synchronized (Part3.class) {
             eq = (counter == counter2);
         }
         System.out.printf("counter %s counter2%n", eq ? "==" : "!=");

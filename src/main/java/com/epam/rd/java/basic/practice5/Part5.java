@@ -1,6 +1,5 @@
 package com.epam.rd.java.basic.practice5;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -48,20 +47,14 @@ public class Part5 implements Runnable {
     }
 
     private static boolean createFile(int len) {
-        RandomAccessFile file;
         try {
-            file = new RandomAccessFile("part5.txt", "rw");
-        } catch (FileNotFoundException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            return true;
-        }
-        try {
+            RandomAccessFile file = new RandomAccessFile("part5.txt", "rw");    //NOSONAR
             file.setLength(len);
+            outputFile = file;
         } catch (IOException e) {
             Logger.getGlobal().severe(e.getMessage());
             return true;
         }
-        outputFile = file;
         return false;
     }
 
