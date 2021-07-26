@@ -18,7 +18,7 @@ public class Part5 implements Runnable {
     }
 
     public static void main(final String[] args) {
-        if (createFile(FILE_LENGTH)) {
+        if (createFile()) {
             return;
         }
         Thread[] threads = new Thread[10];
@@ -43,9 +43,9 @@ public class Part5 implements Runnable {
         }
     }
 
-    private static boolean createFile(int len) {
+    private static boolean createFile() {
         try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
-            file.setLength(len);
+            file.setLength(FILE_LENGTH);
         } catch (IOException e) {
             Logger.getGlobal().severe(e.getMessage());
             return true;
@@ -53,7 +53,7 @@ public class Part5 implements Runnable {
         return false;
     }
 
-    private static void showFile() throws IOException{
+    private static void showFile() throws IOException {
         byte[] data = new byte[FILE_LENGTH];
         int size = 0;
         try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
