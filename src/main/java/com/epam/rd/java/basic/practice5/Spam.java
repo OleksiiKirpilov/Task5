@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 public class Spam {
 
-    private Thread[] threads;
+    private final Thread[] threads;
 
     public Spam(final String[] messages, final int[] delays) {
         int num = messages.length;
@@ -65,7 +65,6 @@ public class Spam {
                 try {
                     sleep(delay);
                 } catch (InterruptedException e) {
-                    //Logger.getGlobal().severe(e.getMessage());
                     currentThread().interrupt();
                     break;
                 }
