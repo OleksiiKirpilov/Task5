@@ -9,8 +9,7 @@ public class Part5 implements Runnable {
 
     private static final int LINE_LENGTH = 20 + System.lineSeparator().length();
     private static final int FILE_LENGTH = 10 * LINE_LENGTH;
-
-    private static RandomAccessFile outputFile;
+    private static final String FILE_NAME = "part.txt";
 
     private final int number;
 
@@ -39,17 +38,14 @@ public class Part5 implements Runnable {
         }
         try {
             showFile();
-            outputFile.close();
         } catch (IOException e) {
             Logger.getGlobal().severe(e.getMessage());
         }
     }
 
     private static boolean createFile(int len) {
-        try {
-            RandomAccessFile file = new RandomAccessFile("part5.txt", "rw");    //NOSONAR
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
             file.setLength(len);
-            outputFile = file;
         } catch (IOException e) {
             Logger.getGlobal().severe(e.getMessage());
             return true;
@@ -57,10 +53,16 @@ public class Part5 implements Runnable {
         return false;
     }
 
-    private static void showFile() throws IOException {
-        outputFile.seek(0);
+    private static void showFile() throws IOException{
         byte[] data = new byte[FILE_LENGTH];
-        int size = outputFile.read(data);
+        int size = 0;
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
+            file.seek(0);
+            size = file.read(data);
+        } catch (IOException e) {
+            Logger.getGlobal().severe(e.getMessage());
+            throw new IOException();
+        }
         if (size != FILE_LENGTH) {
             throw new IOException("Incorrect file size.");
         }
@@ -73,14 +75,14 @@ public class Part5 implements Runnable {
     }
 
     private static synchronized void processDigit(int number) {
-        try {
-            outputFile.seek((long) LINE_LENGTH * number);
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
+            file.seek((long) LINE_LENGTH * number);
             int n = '0' + number;
             for (int i = 0; i < 20; i++) {
-                outputFile.write(n);
+                file.write(n);
                 pause();
             }
-            outputFile.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
+            file.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             Logger.getGlobal().severe(e.getMessage());
         }
