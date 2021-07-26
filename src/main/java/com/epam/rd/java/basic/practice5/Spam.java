@@ -16,7 +16,7 @@ public class Spam {
     }
 
     public static void main(final String[] args) {
-        Spam spam = new Spam(new String[]{"@@@", "bbbbbbb"}, new int[]{500, 333});
+        Spam spam = new Spam(new String[]{"@@@", "bbbbbbb"}, new int[]{333, 222});
         spam.start();
         Scanner in = new Scanner(System.in);
         while (!in.hasNextLine() || !in.nextLine().isEmpty()) {
@@ -69,6 +69,20 @@ public class Spam {
                     currentThread().interrupt();
                     break;
                 }
+            }
+        }
+    }
+
+    public static void runThreadArray(Thread[] threads) {
+        for (Thread t : threads) {
+            t.start();
+        }
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                Logger.getGlobal().severe(e.getMessage());
+                Thread.currentThread().interrupt();
             }
         }
     }

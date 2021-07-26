@@ -25,17 +25,7 @@ public class Part5 implements Runnable {
         for (int i = 0; i < 10; i++) {
             threads[i] = new Thread(new Part5(i));
         }
-        for (Thread t : threads) {
-            t.start();
-        }
-        for (Thread t : threads) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        }
+        Spam.runThreadArray(threads);
         try {
             showFile();
         } catch (IOException e) {

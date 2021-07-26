@@ -21,23 +21,19 @@ public class Part1 extends Thread {
         worker();
     }
 
+    private static void processThread(Thread t) {
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            Logger.getGlobal().severe(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public static void main(String[] args) {
-        Thread t1 = new Part1();
-        Thread t2 = new Thread(Part1::worker);
-        t1.start();
-        try {
-            t1.join();
-        } catch (InterruptedException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            Thread.currentThread().interrupt();
-        }
-        t2.start();
-        try {
-            t2.join();
-        } catch (InterruptedException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            Thread.currentThread().interrupt();
-        }
+        processThread(new Part1());
+        processThread(new Thread(Part1::worker));
     }
 
 }

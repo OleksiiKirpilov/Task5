@@ -35,16 +35,16 @@ public class Part3 {
                 @Override
                 public void run() {
                     for (int count = 0; count < numberOfIterations; count++) {
-                        long t1 = System.nanoTime() / 1_000_000;
+                        int t1 = (int) (System.nanoTime() / 1_000_000);
                         if (sync) {
                             compareSync();
                         } else {
                             compare();
                         }
                         counter++;
-                        long t2 = System.nanoTime() / 1_000_000;
+                        int t2 = (int) (System.nanoTime() / 1_000_000);
                         try {
-                            sleep(100 - (t2 - t1));
+                            sleep(100L - (t2 - t1));
                         } catch (InterruptedException e) {
                             Logger.getGlobal().severe(e.getMessage());
                             interrupt();
@@ -59,7 +59,6 @@ public class Part3 {
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
         p.work();
-        System.out.println();
         p = new Part3(2, 10);
         p.sync = true;
         p.work();
@@ -71,7 +70,7 @@ public class Part3 {
 
     public void compareSync() {
         boolean eq;
-        synchronized (Part3.class) {
+        synchronized (this) {
             eq = (counter == counter2);
         }
         System.out.printf("counter %s counter2%n", eq ? "==" : "!=");

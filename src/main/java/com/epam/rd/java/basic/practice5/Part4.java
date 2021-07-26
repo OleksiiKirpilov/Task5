@@ -4,7 +4,6 @@ package com.epam.rd.java.basic.practice5;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Part4 {
@@ -54,17 +53,7 @@ public class Part4 {
         for (int i = 0; i < numberOfThreads; i++) {
             threads[i] = new MyThread(i, results);
         }
-        for (Thread t : threads) {
-            t.start();
-        }
-        for (Thread t : threads) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        }
+        Spam.runThreadArray(threads);
         int max = findMaxInRow(results);
         long t2 = System.nanoTime();
         System.out.println(max);
@@ -120,7 +109,7 @@ public class Part4 {
             scanner.close();
             return sb.toString().trim();
         } catch (IOException ex) {
-            Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getGlobal().severe(ex.getMessage());
         }
         return sb.toString();
     }
