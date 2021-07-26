@@ -35,21 +35,16 @@ public class Part3 {
                     for (int count = 0; count < numberOfIterations; count++) {
                         if (!sync) {
                             compare();
-                            counter++;
                         } else {
                             compareSync();
-                            increment();
                         }
+                        counter++;
                         try {
                             sleep(100);
                         } catch (InterruptedException e) {
                             interrupt();
                         }
-                        if (!sync) {
-                            counter2++;
-                        } else {
-                            increment2();
-                        }
+                        counter2++;
                     }
                 }
             };
