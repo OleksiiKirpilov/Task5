@@ -62,13 +62,13 @@ public class Spam {
         @Override
         public void run() {
             while (true) {
+                System.out.println(message);
                 try {
                     sleep(delay);
                 } catch (InterruptedException e) {
                     currentThread().interrupt();
                     break;
                 }
-                System.out.println(message);
             }
         }
     }

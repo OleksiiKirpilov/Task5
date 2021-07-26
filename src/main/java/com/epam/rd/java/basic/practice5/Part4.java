@@ -14,7 +14,7 @@ public class Part4 {
     public static void main(final String[] args) {
         loadMatrix();
         findMax();
-        findMaxParralel();
+        findMaxParallel();
     }
 
     private static void findMax() {
@@ -46,14 +46,14 @@ public class Part4 {
         }
     }
 
-    private static void findMaxParralel() {
-        long t1 = System.nanoTime();
+    private static void findMaxParallel() {
         int numberOfThreads = matrix.length;
         int[] results = new int[numberOfThreads];
         Thread[] threads = new Thread[numberOfThreads];
         for (int i = 0; i < numberOfThreads ; i++) {
             threads[i] = new MyThread(i, results);
         }
+        long t1 = System.nanoTime();
         for (Thread t : threads) {
             t.start();
         }

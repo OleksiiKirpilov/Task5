@@ -6,6 +6,8 @@ public class Demo {
         Part1.main(args);
         Part2.main(args);
         Part3.main(args);
+        Part4.main(args);
+        Part5.main(args);
     }
 
 }
