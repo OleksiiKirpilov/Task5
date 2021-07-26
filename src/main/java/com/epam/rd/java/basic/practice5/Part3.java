@@ -1,5 +1,7 @@
 package com.epam.rd.java.basic.practice5;
 
+import java.util.logging.Logger;
+
 public class Part3 {
 
     private int counter;
@@ -33,15 +35,18 @@ public class Part3 {
                 @Override
                 public void run() {
                     for (int count = 0; count < numberOfIterations; count++) {
+                        long t1 = System.nanoTime() / 1_000_000;
                         if (sync) {
                             compareSync();
                         } else {
                             compare();
                         }
                         counter++;
+                        long t2 = System.nanoTime() / 1_000_000;
                         try {
-                            sleep(100);
+                            sleep(100 - (t2 - t1));
                         } catch (InterruptedException e) {
+                            Logger.getGlobal().severe(e.getMessage());
                             interrupt();
                         }
                         counter2++;
