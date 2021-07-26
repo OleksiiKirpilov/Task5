@@ -71,15 +71,15 @@ public class Part3 {
     }
 
     public void compare() {
-        System.out.printf("counter %s counter2%n", (counter == counter2) ? "==" : "!=");
+        System.out.printf("%d %s %d%n", counter, (counter == counter2) ? "==" : "!=", counter2);
     }
 
     public void compareSync() {
         boolean eq;
-        synchronized (this) {
+        synchronized (Part3.class) {
             eq = (counter == counter2);
+            System.out.printf("%d %s %d%n", counter, eq ? "==" : "!=", counter2);
         }
-        System.out.printf("counter %s counter2%n", eq ? "==" : "!=");
 
     }
 
