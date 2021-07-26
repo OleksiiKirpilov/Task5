@@ -7,9 +7,10 @@ import java.util.logging.Logger;
 
 public class Part5 implements Runnable {
 
+    private static final int LINE_LENGTH = 20 + System.lineSeparator().length();
+    private static final int FILE_LENGTH = 10 * LINE_LENGTH;
+
     private static RandomAccessFile outputFile;
-    private static int lineLength;
-    private static int fileLength;
 
     private final int number;
 
@@ -18,9 +19,7 @@ public class Part5 implements Runnable {
     }
 
     public static void main(final String[] args) {
-        lineLength = 20 + System.lineSeparator().length();
-        fileLength = 10 * lineLength;
-        if (createFile(fileLength)) {
+        if (createFile(FILE_LENGTH)) {
             return;
         }
         Thread[] threads = new Thread[10];
@@ -60,9 +59,9 @@ public class Part5 implements Runnable {
 
     private static void showFile() throws IOException {
         outputFile.seek(0);
-        byte[] data = new byte[fileLength];
+        byte[] data = new byte[FILE_LENGTH];
         int size = outputFile.read(data);
-        if (size != fileLength) {
+        if (size != FILE_LENGTH) {
             throw new IOException("Incorrect file size.");
         }
         System.out.print(new String(data));
@@ -70,22 +69,24 @@ public class Part5 implements Runnable {
 
     @Override
     public void run() {
-        synchronized (Part5.class) {
-            try {
-                outputFile.seek((long) lineLength * number);
-                int n = '0' + number;
-                for (int i = 0; i < 20; i++) {
-                    outputFile.write(n);
-                    pause();
-                }
-                outputFile.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                Logger.getGlobal().severe(e.getMessage());
+        processDigit(number);
+    }
+
+    private static synchronized void processDigit(int number) {
+        try {
+            outputFile.seek((long) LINE_LENGTH * number);
+            int n = '0' + number;
+            for (int i = 0; i < 20; i++) {
+                outputFile.write(n);
+                pause();
             }
+            outputFile.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            Logger.getGlobal().severe(e.getMessage());
         }
     }
 
-    public void pause() {
+    public static void pause() {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
