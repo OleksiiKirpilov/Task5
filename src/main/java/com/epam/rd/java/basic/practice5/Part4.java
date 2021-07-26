@@ -13,8 +13,8 @@ public class Part4 {
 
     public static void main(final String[] args) {
         loadMatrix();
-        findMax();
         findMaxParallel();
+        findMax();
     }
 
     private static void findMax() {
@@ -51,7 +51,7 @@ public class Part4 {
         int numberOfThreads = matrix.length;
         int[] results = new int[numberOfThreads];
         Thread[] threads = new Thread[numberOfThreads];
-        for (int i = 0; i < numberOfThreads ; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             threads[i] = new MyThread(i, results);
         }
         for (Thread t : threads) {
