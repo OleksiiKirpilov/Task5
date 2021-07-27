@@ -2,7 +2,6 @@ package com.epam.rd.java.basic.practice5;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 public class Part5 implements Runnable {
