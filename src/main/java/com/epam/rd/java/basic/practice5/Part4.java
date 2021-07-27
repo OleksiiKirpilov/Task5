@@ -69,12 +69,7 @@ public class Part4 {
     }
 
     private static int getMax(int max, int n) {
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            Thread.currentThread().interrupt();
-        }
+        Part5.pause(1);
         return Math.max(max, n);
     }
 

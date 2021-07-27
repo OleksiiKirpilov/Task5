@@ -18,20 +18,6 @@ public class Part3 {
         this.numberOfIterations = numberOfIterations;
     }
 
-    private void work() {
-        for (Thread t : threads) {
-            t.start();
-        }
-        for (Thread t : threads) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
     private void createThreads(int numberOfThreads, int numberOfIterations) {
         for (int i = 0; i < numberOfThreads; i++) {
             if (sync) {
@@ -45,7 +31,7 @@ public class Part3 {
     private void worker(int numberOfIterations) {
         for (int count = 0; count < numberOfIterations; count++) {
             System.out.printf("%d %d %s %d%n",
-                    System.nanoTime() / 1_000_000, counter, (counter == counter2) ? "==" : "!=", counter2);
+                    System.currentTimeMillis(), counter, (counter == counter2) ? "==" : "!=", counter2);
             counter++;
             try {
                 Thread.sleep(100);
@@ -71,7 +57,7 @@ public class Part3 {
     public void compare() {
         threads = new Thread[numberOfThreads];
         createThreads(numberOfThreads, numberOfIterations);
-        work();
+        Spam.runThreadArray(threads);
     }
 
     public void compareSync() {

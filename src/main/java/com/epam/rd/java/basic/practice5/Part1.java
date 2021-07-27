@@ -7,12 +7,7 @@ public class Part1 extends Thread {
     public static void worker() {
         for (int i = 0; i < 4; i++) {
             System.out.println(currentThread().getName());
-            try {
-                sleep(500);
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-            }
+            Part5.pause(500);
         }
     }
 

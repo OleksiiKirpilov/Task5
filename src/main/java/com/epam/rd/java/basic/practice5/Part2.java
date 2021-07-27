@@ -18,24 +18,10 @@ public class Part2 {
             if (done) {
                 return -1;
             } else {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    Logger.getGlobal().severe(e.getMessage());
-                    Thread.currentThread().interrupt();
-                }
+                Part5.pause(2000);
                 done = true;
                 return '\n';
             }
-        }
-
-        @Override
-        public int read(byte[] b, int off, int len) throws IOException {
-            for (int i = off; i < off + len; i++) {
-                int tmp = read();
-                b[i] = (byte) tmp;
-            }
-            return len;
         }
 
     }
