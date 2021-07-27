@@ -75,8 +75,8 @@ public class Part3 {
 
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
-        p.compare();
         p.compareSync();
+        p.compare();
     }
 
     public void compare() {
@@ -91,14 +91,16 @@ public class Part3 {
     }
 
     private void countersCompare() {
-        System.out.printf("%d %s %d%n", counter, (counter == counter2) ? "==" : "!=", counter2);
+        System.out.printf("%d %d %s %d%n",
+                System.nanoTime()/1000000, counter, (counter == counter2) ? "==" : "!=", counter2);
     }
 
     private void countersCompareSync() {
         boolean eq;
         synchronized (this) {
             eq = (counter == counter2);
-            System.out.printf("%d %s %d%n", counter, eq ? "==" : "!=", counter2);
+            System.out.printf("%d %d %s %d%n",
+                    System.nanoTime()/1000000, counter, eq ? "==" : "!=", counter2);
         }
     }
 
