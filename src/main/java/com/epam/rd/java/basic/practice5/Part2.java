@@ -31,9 +31,9 @@ public class Part2 {
 
         @Override
         public int read(byte[] b, int off, int len) throws IOException {
-            for (int i = off; i < off + len ; i++) {
+            for (int i = off; i < off + len; i++) {
                 int tmp = read();
-                b[i] = (byte)tmp;
+                b[i] = (byte) tmp;
             }
             return len;
         }

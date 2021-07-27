@@ -19,13 +19,7 @@ public class Part3 {
         this.numberOfIterations = numberOfIterations;
     }
 
-    public Part3(int numberOfThreads, int numberOfIterations, boolean sync) {
-        this(numberOfThreads, numberOfIterations);
-        this.sync = sync;
-    }
-
     private void work() {
-        // start all threads and join them
         for (Thread t : threads) {
             t.start();
         }
@@ -52,11 +46,8 @@ public class Part3 {
 
     private void worker(int numberOfIterations) {
         for (int count = 0; count < numberOfIterations; count++) {
-            if (sync) {
-                countersCompareSync();
-            } else {
-                countersCompare();
-            }
+            System.out.printf("%d %d %s %d%n",
+                    System.nanoTime() / 1_000_000, counter, (counter == counter2) ? "==" : "!=", counter2);
             counter++;
             try {
                 Thread.sleep(100);
@@ -88,20 +79,6 @@ public class Part3 {
     public void compareSync() {
         this.sync = false;
         compare();
-    }
-
-    private void countersCompare() {
-        System.out.printf("%d %d %s %d%n",
-                System.nanoTime()/1000000, counter, (counter == counter2) ? "==" : "!=", counter2);
-    }
-
-    private void countersCompareSync() {
-        boolean eq;
-        synchronized (this) {
-            eq = (counter == counter2);
-            System.out.printf("%d %d %s %d%n",
-                    System.nanoTime()/1000000, counter, eq ? "==" : "!=", counter2);
-        }
     }
 
 }
