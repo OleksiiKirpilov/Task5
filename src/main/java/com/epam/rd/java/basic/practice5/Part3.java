@@ -7,14 +7,16 @@ public class Part3 {
     private int counter;
     private int counter2;
 
+    private final int numberOfThreads;
+    private final int numberOfIterations;
+
     private boolean sync = false;
 
-    private final Thread[] threads;
+    private Thread[] threads;
 
     public Part3(int numberOfThreads, int numberOfIterations) {
-        threads = new Thread[numberOfThreads];
-        createThreads(numberOfThreads, numberOfIterations);
-        work();
+        this.numberOfThreads = numberOfThreads;
+        this.numberOfIterations = numberOfIterations;
     }
 
     public Part3(int numberOfThreads, int numberOfIterations, boolean sync) {
@@ -47,9 +49,9 @@ public class Part3 {
     private void worker(int numberOfIterations) {
         for (int count = 0; count < numberOfIterations; count++) {
             if (sync) {
-                compareSync();
+                countersCompareSync();
             } else {
-                compare();
+                countersCompare();
             }
             counter++;
             try {
@@ -65,22 +67,31 @@ public class Part3 {
 
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
-        System.err.println(p);
-        p = new Part3(2, 10, true);
-        System.err.println(p);
+        p.compare();
+        p.compareSync();
     }
 
     public void compare() {
-        System.out.printf("%d %s %d%n", counter, (counter == counter2) ? "==" : "!=", counter2);
+        threads = new Thread[numberOfThreads];
+        createThreads(numberOfThreads, numberOfIterations);
+        work();
     }
 
     public void compareSync() {
+        this.sync = true;
+        compare();
+    }
+
+    private void countersCompare() {
+        System.out.printf("%d %s %d%n", counter, (counter == counter2) ? "==" : "!=", counter2);
+    }
+
+    private void countersCompareSync() {
         boolean eq;
-        synchronized (Part3.class) {
+        synchronized (this) {
             eq = (counter == counter2);
             System.out.printf("%d %s %d%n", counter, eq ? "==" : "!=", counter2);
         }
-
     }
 
 }
