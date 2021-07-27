@@ -22,7 +22,7 @@ public class Part4 {
         long t1 = System.currentTimeMillis();
         int max = matrix[0][0];
         for (int[] row : matrix) {
-            max = findMaxInRow(row);
+            max = Math.max(max, findMaxInRow(row));
         }
         long t2 = System.currentTimeMillis();
         System.out.println(max);

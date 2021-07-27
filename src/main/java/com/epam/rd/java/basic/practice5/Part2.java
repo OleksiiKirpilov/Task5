@@ -27,7 +27,6 @@ public class Part2 {
     }
 
     public static void main(final String[] args) {
-
         System.setIn(MOCK_STREAM);
         Thread t = new Thread() {
             @Override

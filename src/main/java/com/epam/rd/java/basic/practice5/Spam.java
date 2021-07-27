@@ -19,16 +19,9 @@ public class Spam {
         Spam spam = new Spam(new String[]{"@@@", "bbbbbbb"}, new int[]{333, 222});
         spam.start();
         Scanner in = new Scanner(System.in);
-        while (!in.hasNextLine() || !in.nextLine().isEmpty()) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                Logger.getGlobal().severe(e.getMessage());
-                Thread.currentThread().interrupt();
-                break;
-            }
+        if (in.hasNextLine())  {
+            spam.stop();
         }
-        spam.stop();
     }
 
     public void start() {
