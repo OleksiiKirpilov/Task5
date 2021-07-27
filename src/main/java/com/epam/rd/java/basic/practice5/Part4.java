@@ -3,6 +3,8 @@ package com.epam.rd.java.basic.practice5;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -11,22 +13,20 @@ public class Part4 {
     private static int[][] matrix;
 
     public static void main(final String[] args) {
-        loadMatrix();
+        loadMatrix("part4.txt");
         findMaxParallel();
         findMax();
     }
 
     private static void findMax() {
-        long t1 = System.nanoTime();
+        long t1 = System.currentTimeMillis();
         int max = matrix[0][0];
         for (int[] row : matrix) {
-            for (int n : row) {
-                max = getMax(max, n);
-            }
+            max = findMaxInRow(row);
         }
-        long t2 = System.nanoTime();
+        long t2 = System.currentTimeMillis();
         System.out.println(max);
-        System.out.println((t2 - t1) / 1_000_000);
+        System.out.println(t2 - t1);
     }
 
     private static class MyThread extends Thread {
@@ -46,7 +46,7 @@ public class Part4 {
     }
 
     private static void findMaxParallel() {
-        long t1 = System.nanoTime();
+        long t1 = System.currentTimeMillis();
         int numberOfThreads = matrix.length;
         int[] results = new int[numberOfThreads];
         Thread[] threads = new Thread[numberOfThreads];
@@ -55,9 +55,9 @@ public class Part4 {
         }
         Spam.runThreadArray(threads);
         int max = findMaxInRow(results);
-        long t2 = System.nanoTime();
+        long t2 = System.currentTimeMillis();
         System.out.println(max);
-        System.out.println((t2 - t1) / 1_000_000);
+        System.out.println(t2 - t1);
     }
 
     private static int findMaxInRow(int[] m) {
@@ -78,39 +78,38 @@ public class Part4 {
         return Math.max(max, n);
     }
 
-    private static void loadMatrix() {
-        String input = getInput("part4.txt");
-        String[] lines = input.split(System.lineSeparator());
-        matrix = new int[lines.length][];
-        int row = 0;
-        for (String line : lines) {
-            String[] words = line.split("\\s+");
-            if (words.length < 2) {
-                continue;
-            }
-            int[] numberRow = new int[words.length];
-            for (int j = 0; j < words.length; j++) {
-                numberRow[j] = Integer.parseInt(words[j]);
-            }
-            matrix[row++] = numberRow;
-        }
-        int[][] tmp = new int[row][];
-        System.arraycopy(matrix, 0, tmp, 0, row);
-        matrix = tmp;
-    }
-
-    public static String getInput(String fileName) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            Scanner scanner = new Scanner(new File(fileName), "utf-8");
+    public static void loadMatrix(String fileName) {
+        List<int[]> rows = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(fileName))) {
             while (scanner.hasNextLine()) {
-                sb.append(scanner.nextLine()).append(System.lineSeparator());
+                try (Scanner line = new Scanner(scanner.nextLine())) {
+                    List<Integer> row = new ArrayList<>();
+                    while (line.hasNextInt()) {
+                        row.add(line.nextInt());
+                    }
+                    if (!row.isEmpty()) {
+                        addRowToList(rows, row);
+                    }
+                }
             }
-            scanner.close();
-            return sb.toString().trim();
+            convertListToArray(rows);
         } catch (IOException ex) {
             Logger.getGlobal().severe(ex.getMessage());
         }
-        return sb.toString();
+    }
+
+    private static void addRowToList(List<int[]> rows, List<Integer> row) {
+        int[] arr = new int[row.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = row.get(i);
+        }
+        rows.add(arr);
+    }
+
+    private static void convertListToArray(List<int[]> rows) {
+        matrix = new int[rows.size()][rows.get(0).length];
+        for (int i = 0; i < rows.size(); i++) {
+            matrix[i] = rows.get(i);
+        }
     }
 }

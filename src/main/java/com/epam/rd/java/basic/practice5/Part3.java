@@ -11,7 +11,6 @@ public class Part3 {
     private final int numberOfIterations;
 
     private boolean sync = true;
-
     private Thread[] threads;
 
     public Part3(int numberOfThreads, int numberOfIterations) {
@@ -29,7 +28,6 @@ public class Part3 {
             } catch (InterruptedException e) {
                 Logger.getGlobal().severe(e.getMessage());
                 Thread.currentThread().interrupt();
-                break;
             }
         }
     }
