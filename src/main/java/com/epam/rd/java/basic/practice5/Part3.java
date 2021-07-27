@@ -42,7 +42,11 @@ public class Part3 {
 
     private void createThreads(int numberOfThreads, int numberOfIterations) {
         for (int i = 0; i < numberOfThreads; i++) {
-            threads[i] = new Thread(() -> worker(numberOfIterations));
+            if (sync) {
+                threads[i] = new Thread(() -> worker(numberOfIterations));
+            } else {
+                threads[i] = new Thread(() -> workerSync(numberOfIterations));
+            }
         }
     }
 
@@ -63,6 +67,10 @@ public class Part3 {
             }
             counter2++;
         }
+    }
+
+    private synchronized void workerSync(int numberOfIterations) {
+        worker(numberOfIterations);
     }
 
     public static void main(final String[] args) {
