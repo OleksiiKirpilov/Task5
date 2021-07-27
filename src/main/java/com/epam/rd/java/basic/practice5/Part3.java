@@ -10,7 +10,7 @@ public class Part3 {
     private final int numberOfThreads;
     private final int numberOfIterations;
 
-    private boolean sync = false;
+    private boolean sync = true;
 
     private Thread[] threads;
 
@@ -75,8 +75,8 @@ public class Part3 {
 
     public static void main(final String[] args) {
         Part3 p = new Part3(2, 10);
-        p.compareSync();
         p.compare();
+        p.compareSync();
     }
 
     public void compare() {
@@ -86,7 +86,7 @@ public class Part3 {
     }
 
     public void compareSync() {
-        this.sync = true;
+        this.sync = false;
         compare();
     }
 
